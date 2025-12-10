@@ -100,8 +100,11 @@ class TRAM_Model():
             else:
                 this_pulse = self.pulse
 
+            prom = self.sys_config['PROM']
+            k_tf_deg = self.sys_config['K_TF_DEG']
+
             dydt = [
-                this_pulse * self.sys_config['PROM'] - self.sys_config['K_TF_DEG'] * TF
+                this_pulse * prom - k_tf_deg * TF
             ]
 
             return dydt
@@ -120,16 +123,21 @@ class TRAM_Model():
                 this_pulse = double_sigmoid_pulse(t, **self.pulse_params)
             else:
                 this_pulse = self.pulse
+
+            prom = self.sys_config['PROM']
+            v_a, r_m = self.sys_config['V_A'], self.sys_config['R_M']
+            k_tev, k_tvmv = self.sys_config['K_TEV'], self.sys_config['K_TVMV']
+            k_tram_deg, k_tf_deg = self.sys_config['K_TRAM_DEG'], self.sys_config['K_TF_DEG']
             
             dydt = [
                 # Production + initiate first round
-                this_pulse * self.sys_config['PROM'] - self.sys_config['V_A'] / self.sys_config['R_M'] * TF1n - self.sys_config['K_TRAM_DEG'] * TF1n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF1n - self.sys_config['K_TEV'] * TF1m - self.sys_config['K_TRAM_DEG'] * TF1m,
-                self.sys_config['K_TEV'] * TF1m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF1Cm - self.sys_config['K_TRAM_DEG'] * TF1Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF1Cm - self.sys_config['K_TVMV'] * TF1Cn - self.sys_config['K_TRAM_DEG'] * TF1Cn,
+                this_pulse * prom - v_a / r_m * TF1n - k_tram_deg * TF1n,
+                v_a / r_m * TF1n - k_tev * TF1m - k_tram_deg * TF1m,
+                k_tev * TF1m - v_a / r_m * TF1Cm - k_tram_deg * TF1Cm,
+                v_a / r_m * TF1Cm - k_tvmv * TF1Cn - k_tram_deg * TF1Cn,
                 
                 # Final TRAM domain cleaved, regular TF degradation (in nucleus)
-                self.sys_config['K_TVMV'] * TF1Cn - self.sys_config['K_TF_DEG'] * TF
+                k_tvmv * TF1Cn - k_tf_deg * TF
             ]
             return dydt
         
@@ -148,21 +156,26 @@ class TRAM_Model():
             else:
                 this_pulse = self.pulse
 
+            prom = self.sys_config['PROM']
+            v_a, r_m = self.sys_config['V_A'], self.sys_config['R_M']
+            k_tev, k_tvmv = self.sys_config['K_TEV'], self.sys_config['K_TVMV']
+            k_tram_deg, k_tf_deg = self.sys_config['K_TRAM_DEG'], self.sys_config['K_TF_DEG']
+
             dydt = [
                 # Production + initiate first round
-                this_pulse * self.sys_config['PROM'] - self.sys_config['V_A'] / self.sys_config['R_M'] * TF1n - self.sys_config['K_TRAM_DEG'] * TF1n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF1n - self.sys_config['K_TEV'] * TF1m - self.sys_config['K_TRAM_DEG'] * TF1m,
-                self.sys_config['K_TEV'] * TF1m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF1Cm - self.sys_config['K_TRAM_DEG'] * TF1Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF1Cm - self.sys_config['K_TVMV'] * TF1Cn - self.sys_config['K_TRAM_DEG'] * TF1Cn,
+                this_pulse * prom - v_a / r_m * TF1n - k_tram_deg * TF1n,
+                v_a / r_m * TF1n - k_tev * TF1m - k_tram_deg * TF1m,
+                k_tev * TF1m - v_a / r_m * TF1Cm - k_tram_deg * TF1Cm,
+                v_a / r_m * TF1Cm - k_tvmv * TF1Cn - k_tram_deg * TF1Cn,
 
                 # Second round
-                self.sys_config['K_TVMV'] * TF1Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF2n - self.sys_config['K_TRAM_DEG'] * TF2n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF2n - self.sys_config['K_TEV'] * TF2m - self.sys_config['K_TRAM_DEG'] * TF2m,
-                self.sys_config['K_TEV'] * TF2m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF2Cm - self.sys_config['K_TRAM_DEG'] * TF2Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF2Cm - self.sys_config['K_TVMV'] * TF2Cn - self.sys_config['K_TRAM_DEG'] * TF2Cn,
+                k_tvmv * TF1Cn - v_a / r_m * TF2n - k_tram_deg * TF2n,
+                v_a / r_m * TF2n - k_tev * TF2m - k_tram_deg * TF2m,
+                k_tev * TF2m - v_a / r_m * TF2Cm - k_tram_deg * TF2Cm,
+                v_a / r_m * TF2Cm - k_tvmv * TF2Cn - k_tram_deg * TF2Cn,
                 
                 # Final TRAM domain cleaved, regular TF degradation (in nucleus)
-                self.sys_config['K_TVMV'] * TF2Cn - self.sys_config['K_TF_DEG'] * TF
+                k_tvmv * TF2Cn - k_tf_deg * TF
             ]
             return dydt
         
@@ -181,27 +194,32 @@ class TRAM_Model():
             else:
                 this_pulse = self.pulse
 
+            prom = self.sys_config['PROM']
+            v_a, r_m = self.sys_config['V_A'], self.sys_config['R_M']
+            k_tev, k_tvmv = self.sys_config['K_TEV'], self.sys_config['K_TVMV']
+            k_tram_deg, k_tf_deg = self.sys_config['K_TRAM_DEG'], self.sys_config['K_TF_DEG']
+
             dydt = [
                 # Production + initiate first round
-                this_pulse * self.sys_config['PROM'] - self.sys_config['V_A'] / self.sys_config['R_M'] * TF1n - self.sys_config['K_TRAM_DEG'] * TF1n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF1n - self.sys_config['K_TEV'] * TF1m - self.sys_config['K_TRAM_DEG'] * TF1m,
-                self.sys_config['K_TEV'] * TF1m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF1Cm - self.sys_config['K_TRAM_DEG'] * TF1Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF1Cm - self.sys_config['K_TVMV'] * TF1Cn - self.sys_config['K_TRAM_DEG'] * TF1Cn,
+                this_pulse * prom - v_a / r_m * TF1n - k_tram_deg * TF1n,
+                v_a / r_m * TF1n - k_tev * TF1m - k_tram_deg * TF1m,
+                k_tev * TF1m - v_a / r_m * TF1Cm - k_tram_deg * TF1Cm,
+                v_a / r_m * TF1Cm - k_tvmv * TF1Cn - k_tram_deg * TF1Cn,
 
                 # Second round
-                self.sys_config['K_TVMV'] * TF1Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF2n - self.sys_config['K_TRAM_DEG'] * TF2n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF2n - self.sys_config['K_TEV'] * TF2m - self.sys_config['K_TRAM_DEG'] * TF2m,
-                self.sys_config['K_TEV'] * TF2m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF2Cm - self.sys_config['K_TRAM_DEG'] * TF2Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF2Cm - self.sys_config['K_TVMV'] * TF2Cn - self.sys_config['K_TRAM_DEG'] * TF2Cn,
+                k_tvmv * TF1Cn - v_a / r_m * TF2n - k_tram_deg * TF2n,
+                v_a / r_m * TF2n - k_tev * TF2m - k_tram_deg * TF2m,
+                k_tev * TF2m - v_a / r_m * TF2Cm - k_tram_deg * TF2Cm,
+                v_a / r_m * TF2Cm - k_tvmv * TF2Cn - k_tram_deg * TF2Cn,
 
                 # Third round
-                self.sys_config['K_TVMV'] * TF2Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF3n - self.sys_config['K_TRAM_DEG'] * TF3n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF3n - self.sys_config['K_TEV'] * TF3m - self.sys_config['K_TRAM_DEG'] * TF3m,
-                self.sys_config['K_TEV'] * TF3m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF3Cm - self.sys_config['K_TRAM_DEG'] * TF3Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF3Cm - self.sys_config['K_TVMV'] * TF3Cn - self.sys_config['K_TRAM_DEG'] * TF3Cn,
+                k_tvmv * TF2Cn - v_a / r_m * TF3n - k_tram_deg * TF3n,
+                v_a / r_m * TF3n - k_tev * TF3m - k_tram_deg * TF3m,
+                k_tev * TF3m - v_a / r_m * TF3Cm - k_tram_deg * TF3Cm,
+                v_a / r_m * TF3Cm - k_tvmv * TF3Cn - k_tram_deg * TF3Cn,
                 
                 # Final TRAM domain cleaved, regular TF degradation (in nucleus)
-                self.sys_config['K_TVMV'] * TF3Cn - self.sys_config['K_TF_DEG'] * TF
+                k_tvmv * TF3Cn - k_tf_deg * TF
             ]
             return dydt
         
@@ -222,34 +240,39 @@ class TRAM_Model():
                 this_pulse = double_sigmoid_pulse(t, **self.pulse_params)
             else:
                 this_pulse = self.pulse
+
+            prom = self.sys_config['PROM']
+            v_a, r_m = self.sys_config['V_A'], self.sys_config['R_M']
+            k_tev, k_tvmv = self.sys_config['K_TEV'], self.sys_config['K_TVMV']
+            k_tram_deg, k_tf_deg = self.sys_config['K_TRAM_DEG'], self.sys_config['K_TF_DEG']
             
             dydt = [
                 # Production + initiate first round
-                this_pulse * self.sys_config['PROM'] - self.sys_config['V_A'] / self.sys_config['R_M'] * TF1n - self.sys_config['K_TRAM_DEG'] * TF1n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF1n - self.sys_config['K_TEV'] * TF1m - self.sys_config['K_TRAM_DEG'] * TF1m,
-                self.sys_config['K_TEV'] * TF1m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF1Cm - self.sys_config['K_TRAM_DEG'] * TF1Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF1Cm - self.sys_config['K_TVMV'] * TF1Cn - self.sys_config['K_TRAM_DEG'] * TF1Cn,
+                this_pulse * prom - v_a / r_m * TF1n - k_tram_deg * TF1n,
+                v_a / r_m * TF1n - k_tev * TF1m - k_tram_deg * TF1m,
+                k_tev * TF1m - v_a / r_m * TF1Cm - k_tram_deg * TF1Cm,
+                v_a / r_m * TF1Cm - k_tvmv * TF1Cn - k_tram_deg * TF1Cn,
 
                 # Second round
-                self.sys_config['K_TVMV'] * TF1Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF2n - self.sys_config['K_TRAM_DEG'] * TF2n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF2n - self.sys_config['K_TEV'] * TF2m - self.sys_config['K_TRAM_DEG'] * TF2m,
-                self.sys_config['K_TEV'] * TF2m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF2Cm - self.sys_config['K_TRAM_DEG'] * TF2Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF2Cm - self.sys_config['K_TVMV'] * TF2Cn - self.sys_config['K_TRAM_DEG'] * TF2Cn,
+                k_tvmv * TF1Cn - v_a / r_m * TF2n - k_tram_deg * TF2n,
+                v_a / r_m * TF2n - k_tev * TF2m - k_tram_deg * TF2m,
+                k_tev * TF2m - v_a / r_m * TF2Cm - k_tram_deg * TF2Cm,
+                v_a / r_m * TF2Cm - k_tvmv * TF2Cn - k_tram_deg * TF2Cn,
 
                 # Third round
-                self.sys_config['K_TVMV'] * TF2Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF3n - self.sys_config['K_TRAM_DEG'] * TF3n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF3n - self.sys_config['K_TEV'] * TF3m - self.sys_config['K_TRAM_DEG'] * TF3m,
-                self.sys_config['K_TEV'] * TF3m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF3Cm - self.sys_config['K_TRAM_DEG'] * TF3Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF3Cm - self.sys_config['K_TVMV'] * TF3Cn - self.sys_config['K_TRAM_DEG'] * TF3Cn,
+                k_tvmv * TF2Cn - v_a / r_m * TF3n - k_tram_deg * TF3n,
+                v_a / r_m * TF3n - k_tev * TF3m - k_tram_deg * TF3m,
+                k_tev * TF3m - v_a / r_m * TF3Cm - k_tram_deg * TF3Cm,
+                v_a / r_m * TF3Cm - k_tvmv * TF3Cn - k_tram_deg * TF3Cn,
 
                 # Fourth round
-                self.sys_config['K_TVMV'] * TF3Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF4n - self.sys_config['K_TRAM_DEG'] * TF4n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF4n - self.sys_config['K_TEV'] * TF4m - self.sys_config['K_TRAM_DEG'] * TF4m,
-                self.sys_config['K_TEV'] * TF4m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF4Cm - self.sys_config['K_TRAM_DEG'] * TF4Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF4Cm - self.sys_config['K_TVMV'] * TF4Cn - self.sys_config['K_TRAM_DEG'] * TF4Cn,
+                k_tvmv * TF3Cn - v_a / r_m * TF4n - k_tram_deg * TF4n,
+                v_a / r_m * TF4n - k_tev * TF4m - k_tram_deg * TF4m,
+                k_tev * TF4m - v_a / r_m * TF4Cm - k_tram_deg * TF4Cm,
+                v_a / r_m * TF4Cm - k_tvmv * TF4Cn - k_tram_deg * TF4Cn,
                 
                 # Final TRAM domain cleaved, regular TF degradation (in nucleus)
-                self.sys_config['K_TVMV'] * TF4Cn - self.sys_config['K_TF_DEG'] * TF
+                k_tvmv * TF4Cn - k_tf_deg * TF
             ]
             return dydt
         
@@ -270,40 +293,45 @@ class TRAM_Model():
                 this_pulse = double_sigmoid_pulse(t, **self.pulse_params)
             else:
                 this_pulse = self.pulse
+
+            prom = self.sys_config['PROM']
+            v_a, r_m = self.sys_config['V_A'], self.sys_config['R_M']
+            k_tev, k_tvmv = self.sys_config['K_TEV'], self.sys_config['K_TVMV']
+            k_tram_deg, k_tf_deg = self.sys_config['K_TRAM_DEG'], self.sys_config['K_TF_DEG']
             
             dydt = [
                 # Production + initiate first round
-                this_pulse * self.sys_config['PROM'] - self.sys_config['V_A'] / self.sys_config['R_M'] * TF1n - self.sys_config['K_TRAM_DEG'] * TF1n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF1n - self.sys_config['K_TEV'] * TF1m - self.sys_config['K_TRAM_DEG'] * TF1m,
-                self.sys_config['K_TEV'] * TF1m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF1Cm - self.sys_config['K_TRAM_DEG'] * TF1Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF1Cm - self.sys_config['K_TVMV'] * TF1Cn - self.sys_config['K_TRAM_DEG'] * TF1Cn,
+                this_pulse * prom - v_a / r_m * TF1n - k_tram_deg * TF1n,
+                v_a / r_m * TF1n - k_tev * TF1m - k_tram_deg * TF1m,
+                k_tev * TF1m - v_a / r_m * TF1Cm - k_tram_deg * TF1Cm,
+                v_a / r_m * TF1Cm - k_tvmv * TF1Cn - k_tram_deg * TF1Cn,
 
                 # Second round
-                self.sys_config['K_TVMV'] * TF1Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF2n - self.sys_config['K_TRAM_DEG'] * TF2n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF2n - self.sys_config['K_TEV'] * TF2m - self.sys_config['K_TRAM_DEG'] * TF2m,
-                self.sys_config['K_TEV'] * TF2m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF2Cm - self.sys_config['K_TRAM_DEG'] * TF2Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF2Cm - self.sys_config['K_TVMV'] * TF2Cn - self.sys_config['K_TRAM_DEG'] * TF2Cn,
+                k_tvmv * TF1Cn - v_a / r_m * TF2n - k_tram_deg * TF2n,
+                v_a / r_m * TF2n - k_tev * TF2m - k_tram_deg * TF2m,
+                k_tev * TF2m - v_a / r_m * TF2Cm - k_tram_deg * TF2Cm,
+                v_a / r_m * TF2Cm - k_tvmv * TF2Cn - k_tram_deg * TF2Cn,
 
                 # Third round
-                self.sys_config['K_TVMV'] * TF2Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF3n - self.sys_config['K_TRAM_DEG'] * TF3n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF3n - self.sys_config['K_TEV'] * TF3m - self.sys_config['K_TRAM_DEG'] * TF3m,
-                self.sys_config['K_TEV'] * TF3m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF3Cm - self.sys_config['K_TRAM_DEG'] * TF3Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF3Cm - self.sys_config['K_TVMV'] * TF3Cn - self.sys_config['K_TRAM_DEG'] * TF3Cn,
+                k_tvmv * TF2Cn - v_a / r_m * TF3n - k_tram_deg * TF3n,
+                v_a / r_m * TF3n - k_tev * TF3m - k_tram_deg * TF3m,
+                k_tev * TF3m - v_a / r_m * TF3Cm - k_tram_deg * TF3Cm,
+                v_a / r_m * TF3Cm - k_tvmv * TF3Cn - k_tram_deg * TF3Cn,
 
                 # Fourth round
-                self.sys_config['K_TVMV'] * TF3Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF4n - self.sys_config['K_TRAM_DEG'] * TF4n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF4n - self.sys_config['K_TEV'] * TF4m - self.sys_config['K_TRAM_DEG'] * TF4m,
-                self.sys_config['K_TEV'] * TF4m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF4Cm - self.sys_config['K_TRAM_DEG'] * TF4Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF4Cm - self.sys_config['K_TVMV'] * TF4Cn - self.sys_config['K_TRAM_DEG'] * TF4Cn,
+                k_tvmv * TF3Cn - v_a / r_m * TF4n - k_tram_deg * TF4n,
+                v_a / r_m * TF4n - k_tev * TF4m - k_tram_deg * TF4m,
+                k_tev * TF4m - v_a / r_m * TF4Cm - k_tram_deg * TF4Cm,
+                v_a / r_m * TF4Cm - k_tvmv * TF4Cn - k_tram_deg * TF4Cn,
 
                 # Fifth round
-                self.sys_config['K_TVMV'] * TF4Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF5n - self.sys_config['K_TRAM_DEG'] * TF5n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF5n - self.sys_config['K_TEV'] * TF5m - self.sys_config['K_TRAM_DEG'] * TF5m,
-                self.sys_config['K_TEV'] * TF5m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF5Cm - self.sys_config['K_TRAM_DEG'] * TF5Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF5Cm - self.sys_config['K_TVMV'] * TF5Cn - self.sys_config['K_TRAM_DEG'] * TF5Cn,
+                k_tvmv * TF4Cn - v_a / r_m * TF5n - k_tram_deg * TF5n,
+                v_a / r_m * TF5n - k_tev * TF5m - k_tram_deg * TF5m,
+                k_tev * TF5m - v_a / r_m * TF5Cm - k_tram_deg * TF5Cm,
+                v_a / r_m * TF5Cm - k_tvmv * TF5Cn - k_tram_deg * TF5Cn,
                 
                 # Final TRAM domain cleaved, regular TF degradation (in nucleus)
-                self.sys_config['K_TVMV'] * TF5Cn - self.sys_config['K_TF_DEG'] * TF
+                k_tvmv * TF5Cn - k_tf_deg * TF
             ]
             return dydt
         
@@ -325,46 +353,51 @@ class TRAM_Model():
                 this_pulse = double_sigmoid_pulse(t, **self.pulse_params)
             else:
                 this_pulse = self.pulse
+
+            prom = self.sys_config['PROM']
+            v_a, r_m = self.sys_config['V_A'], self.sys_config['R_M']
+            k_tev, k_tvmv = self.sys_config['K_TEV'], self.sys_config['K_TVMV']
+            k_tram_deg, k_tf_deg = self.sys_config['K_TRAM_DEG'], self.sys_config['K_TF_DEG']
             
             dydt = [
                 # Production + initiate first round
-                this_pulse * self.sys_config['PROM'] - self.sys_config['V_A'] / self.sys_config['R_M'] * TF1n - self.sys_config['K_TRAM_DEG'] * TF1n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF1n - self.sys_config['K_TEV'] * TF1m - self.sys_config['K_TRAM_DEG'] * TF1m,
-                self.sys_config['K_TEV'] * TF1m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF1Cm - self.sys_config['K_TRAM_DEG'] * TF1Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF1Cm - self.sys_config['K_TVMV'] * TF1Cn - self.sys_config['K_TRAM_DEG'] * TF1Cn,
+                this_pulse * prom - v_a / r_m * TF1n - k_tram_deg * TF1n,
+                v_a / r_m * TF1n - k_tev * TF1m - k_tram_deg * TF1m,
+                k_tev * TF1m - v_a / r_m * TF1Cm - k_tram_deg * TF1Cm,
+                v_a / r_m * TF1Cm - k_tvmv * TF1Cn - k_tram_deg * TF1Cn,
 
                 # Second round
-                self.sys_config['K_TVMV'] * TF1Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF2n - self.sys_config['K_TRAM_DEG'] * TF2n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF2n - self.sys_config['K_TEV'] * TF2m - self.sys_config['K_TRAM_DEG'] * TF2m,
-                self.sys_config['K_TEV'] * TF2m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF2Cm - self.sys_config['K_TRAM_DEG'] * TF2Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF2Cm - self.sys_config['K_TVMV'] * TF2Cn - self.sys_config['K_TRAM_DEG'] * TF2Cn,
+                k_tvmv * TF1Cn - v_a / r_m * TF2n - k_tram_deg * TF2n,
+                v_a / r_m * TF2n - k_tev * TF2m - k_tram_deg * TF2m,
+                k_tev * TF2m - v_a / r_m * TF2Cm - k_tram_deg * TF2Cm,
+                v_a / r_m * TF2Cm - k_tvmv * TF2Cn - k_tram_deg * TF2Cn,
 
                 # Third round
-                self.sys_config['K_TVMV'] * TF2Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF3n - self.sys_config['K_TRAM_DEG'] * TF3n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF3n - self.sys_config['K_TEV'] * TF3m - self.sys_config['K_TRAM_DEG'] * TF3m,
-                self.sys_config['K_TEV'] * TF3m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF3Cm - self.sys_config['K_TRAM_DEG'] * TF3Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF3Cm - self.sys_config['K_TVMV'] * TF3Cn - self.sys_config['K_TRAM_DEG'] * TF3Cn,
+                k_tvmv * TF2Cn - v_a / r_m * TF3n - k_tram_deg * TF3n,
+                v_a / r_m * TF3n - k_tev * TF3m - k_tram_deg * TF3m,
+                k_tev * TF3m - v_a / r_m * TF3Cm - k_tram_deg * TF3Cm,
+                v_a / r_m * TF3Cm - k_tvmv * TF3Cn - k_tram_deg * TF3Cn,
 
                 # Fourth round
-                self.sys_config['K_TVMV'] * TF3Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF4n - self.sys_config['K_TRAM_DEG'] * TF4n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF4n - self.sys_config['K_TEV'] * TF4m - self.sys_config['K_TRAM_DEG'] * TF4m,
-                self.sys_config['K_TEV'] * TF4m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF4Cm - self.sys_config['K_TRAM_DEG'] * TF4Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF4Cm - self.sys_config['K_TVMV'] * TF4Cn - self.sys_config['K_TRAM_DEG'] * TF4Cn,
+                k_tvmv * TF3Cn - v_a / r_m * TF4n - k_tram_deg * TF4n,
+                v_a / r_m * TF4n - k_tev * TF4m - k_tram_deg * TF4m,
+                k_tev * TF4m - v_a / r_m * TF4Cm - k_tram_deg * TF4Cm,
+                v_a / r_m * TF4Cm - k_tvmv * TF4Cn - k_tram_deg * TF4Cn,
 
                 # Fifth round
-                self.sys_config['K_TVMV'] * TF4Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF5n - self.sys_config['K_TRAM_DEG'] * TF5n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF5n - self.sys_config['K_TEV'] * TF5m - self.sys_config['K_TRAM_DEG'] * TF5m,
-                self.sys_config['K_TEV'] * TF5m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF5Cm - self.sys_config['K_TRAM_DEG'] * TF5Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF5Cm - self.sys_config['K_TVMV'] * TF5Cn - self.sys_config['K_TRAM_DEG'] * TF5Cn,
+                k_tvmv * TF4Cn - v_a / r_m * TF5n - k_tram_deg * TF5n,
+                v_a / r_m * TF5n - k_tev * TF5m - k_tram_deg * TF5m,
+                k_tev * TF5m - v_a / r_m * TF5Cm - k_tram_deg * TF5Cm,
+                v_a / r_m * TF5Cm - k_tvmv * TF5Cn - k_tram_deg * TF5Cn,
 
                 # Sixth round
-                self.sys_config['K_TVMV'] * TF5Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF6n - self.sys_config['K_TRAM_DEG'] * TF6n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF6n - self.sys_config['K_TEV'] * TF6m - self.sys_config['K_TRAM_DEG'] * TF6m,
-                self.sys_config['K_TEV'] * TF6m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF6Cm - self.sys_config['K_TRAM_DEG'] * TF6Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF6Cm - self.sys_config['K_TVMV'] * TF6Cn - self.sys_config['K_TRAM_DEG'] * TF6Cn,
+                k_tvmv * TF5Cn - v_a / r_m * TF6n - k_tram_deg * TF6n,
+                v_a / r_m * TF6n - k_tev * TF6m - k_tram_deg * TF6m,
+                k_tev * TF6m - v_a / r_m * TF6Cm - k_tram_deg * TF6Cm,
+                v_a / r_m * TF6Cm - k_tvmv * TF6Cn - k_tram_deg * TF6Cn,
                 
                 # Final TRAM domain cleaved, regular TF degradation (in nucleus)
-                self.sys_config['K_TVMV'] * TF6Cn - self.sys_config['K_TF_DEG'] * TF
+                k_tvmv * TF6Cn - k_tf_deg * TF
             ]
             return dydt
         
@@ -387,52 +420,57 @@ class TRAM_Model():
                 this_pulse = double_sigmoid_pulse(t, **self.pulse_params)
             else:
                 this_pulse = self.pulse
+
+            prom = self.sys_config['PROM']
+            v_a, r_m = self.sys_config['V_A'], self.sys_config['R_M']
+            k_tev, k_tvmv = self.sys_config['K_TEV'], self.sys_config['K_TVMV']
+            k_tram_deg, k_tf_deg = self.sys_config['K_TRAM_DEG'], self.sys_config['K_TF_DEG']
             
             dydt = [
                 # Production + initiate first round
-                this_pulse * self.sys_config['PROM'] - self.sys_config['V_A'] / self.sys_config['R_M'] * TF1n - self.sys_config['K_TRAM_DEG'] * TF1n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF1n - self.sys_config['K_TEV'] * TF1m - self.sys_config['K_TRAM_DEG'] * TF1m,
-                self.sys_config['K_TEV'] * TF1m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF1Cm - self.sys_config['K_TRAM_DEG'] * TF1Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF1Cm - self.sys_config['K_TVMV'] * TF1Cn - self.sys_config['K_TRAM_DEG'] * TF1Cn,
+                this_pulse * prom - v_a / r_m * TF1n - k_tram_deg * TF1n,
+                v_a / r_m * TF1n - k_tev * TF1m - k_tram_deg * TF1m,
+                k_tev * TF1m - v_a / r_m * TF1Cm - k_tram_deg * TF1Cm,
+                v_a / r_m * TF1Cm - k_tvmv * TF1Cn - k_tram_deg * TF1Cn,
 
                 # Second round
-                self.sys_config['K_TVMV'] * TF1Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF2n - self.sys_config['K_TRAM_DEG'] * TF2n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF2n - self.sys_config['K_TEV'] * TF2m - self.sys_config['K_TRAM_DEG'] * TF2m,
-                self.sys_config['K_TEV'] * TF2m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF2Cm - self.sys_config['K_TRAM_DEG'] * TF2Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF2Cm - self.sys_config['K_TVMV'] * TF2Cn - self.sys_config['K_TRAM_DEG'] * TF2Cn,
+                k_tvmv * TF1Cn - v_a / r_m * TF2n - k_tram_deg * TF2n,
+                v_a / r_m * TF2n - k_tev * TF2m - k_tram_deg * TF2m,
+                k_tev * TF2m - v_a / r_m * TF2Cm - k_tram_deg * TF2Cm,
+                v_a / r_m * TF2Cm - k_tvmv * TF2Cn - k_tram_deg * TF2Cn,
 
                 # Third round
-                self.sys_config['K_TVMV'] * TF2Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF3n - self.sys_config['K_TRAM_DEG'] * TF3n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF3n - self.sys_config['K_TEV'] * TF3m - self.sys_config['K_TRAM_DEG'] * TF3m,
-                self.sys_config['K_TEV'] * TF3m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF3Cm - self.sys_config['K_TRAM_DEG'] * TF3Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF3Cm - self.sys_config['K_TVMV'] * TF3Cn - self.sys_config['K_TRAM_DEG'] * TF3Cn,
+                k_tvmv * TF2Cn - v_a / r_m * TF3n - k_tram_deg * TF3n,
+                v_a / r_m * TF3n - k_tev * TF3m - k_tram_deg * TF3m,
+                k_tev * TF3m - v_a / r_m * TF3Cm - k_tram_deg * TF3Cm,
+                v_a / r_m * TF3Cm - k_tvmv * TF3Cn - k_tram_deg * TF3Cn,
 
                 # Fourth round
-                self.sys_config['K_TVMV'] * TF3Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF4n - self.sys_config['K_TRAM_DEG'] * TF4n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF4n - self.sys_config['K_TEV'] * TF4m - self.sys_config['K_TRAM_DEG'] * TF4m,
-                self.sys_config['K_TEV'] * TF4m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF4Cm - self.sys_config['K_TRAM_DEG'] * TF4Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF4Cm - self.sys_config['K_TVMV'] * TF4Cn - self.sys_config['K_TRAM_DEG'] * TF4Cn,
+                k_tvmv * TF3Cn - v_a / r_m * TF4n - k_tram_deg * TF4n,
+                v_a / r_m * TF4n - k_tev * TF4m - k_tram_deg * TF4m,
+                k_tev * TF4m - v_a / r_m * TF4Cm - k_tram_deg * TF4Cm,
+                v_a / r_m * TF4Cm - k_tvmv * TF4Cn - k_tram_deg * TF4Cn,
 
                 # Fifth round
-                self.sys_config['K_TVMV'] * TF4Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF5n - self.sys_config['K_TRAM_DEG'] * TF5n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF5n - self.sys_config['K_TEV'] * TF5m - self.sys_config['K_TRAM_DEG'] * TF5m,
-                self.sys_config['K_TEV'] * TF5m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF5Cm - self.sys_config['K_TRAM_DEG'] * TF5Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF5Cm - self.sys_config['K_TVMV'] * TF5Cn - self.sys_config['K_TRAM_DEG'] * TF5Cn,
+                k_tvmv * TF4Cn - v_a / r_m * TF5n - k_tram_deg * TF5n,
+                v_a / r_m * TF5n - k_tev * TF5m - k_tram_deg * TF5m,
+                k_tev * TF5m - v_a / r_m * TF5Cm - k_tram_deg * TF5Cm,
+                v_a / r_m * TF5Cm - k_tvmv * TF5Cn - k_tram_deg * TF5Cn,
 
                 # Sixth round
-                self.sys_config['K_TVMV'] * TF5Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF6n - self.sys_config['K_TRAM_DEG'] * TF6n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF6n - self.sys_config['K_TEV'] * TF6m - self.sys_config['K_TRAM_DEG'] * TF6m,
-                self.sys_config['K_TEV'] * TF6m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF6Cm - self.sys_config['K_TRAM_DEG'] * TF6Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF6Cm - self.sys_config['K_TVMV'] * TF6Cn - self.sys_config['K_TRAM_DEG'] * TF6Cn,
+                k_tvmv * TF5Cn - v_a / r_m * TF6n - k_tram_deg * TF6n,
+                v_a / r_m * TF6n - k_tev * TF6m - k_tram_deg * TF6m,
+                k_tev * TF6m - v_a / r_m * TF6Cm - k_tram_deg * TF6Cm,
+                v_a / r_m * TF6Cm - k_tvmv * TF6Cn - k_tram_deg * TF6Cn,
 
                 # Seventh round
-                self.sys_config['K_TVMV'] * TF6Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF7n - self.sys_config['K_TRAM_DEG'] * TF7n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF7n - self.sys_config['K_TEV'] * TF7m - self.sys_config['K_TRAM_DEG'] * TF7m,
-                self.sys_config['K_TEV'] * TF7m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF7Cm - self.sys_config['K_TRAM_DEG'] * TF7Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF7Cm - self.sys_config['K_TVMV'] * TF7Cn - self.sys_config['K_TRAM_DEG'] * TF7Cn,
+                k_tvmv * TF6Cn - v_a / r_m * TF7n - k_tram_deg * TF7n,
+                v_a / r_m * TF7n - k_tev * TF7m - k_tram_deg * TF7m,
+                k_tev * TF7m - v_a / r_m * TF7Cm - k_tram_deg * TF7Cm,
+                v_a / r_m * TF7Cm - k_tvmv * TF7Cn - k_tram_deg * TF7Cn,
                 
                 # Final TRAM domain cleaved, regular TF degradation (in nucleus)
-                self.sys_config['K_TVMV'] * TF7Cn - self.sys_config['K_TF_DEG'] * TF
+                k_tvmv * TF7Cn - k_tf_deg * TF
             ]
             return dydt
         
@@ -456,58 +494,63 @@ class TRAM_Model():
                 this_pulse = double_sigmoid_pulse(t, **self.pulse_params)
             else:
                 this_pulse = self.pulse
+
+            prom = self.sys_config['PROM']
+            v_a, r_m = self.sys_config['V_A'], self.sys_config['R_M']
+            k_tev, k_tvmv = self.sys_config['K_TEV'], self.sys_config['K_TVMV']
+            k_tram_deg, k_tf_deg = self.sys_config['K_TRAM_DEG'], self.sys_config['K_TF_DEG']
             
             dydt = [
                 # Production + initiate first round
-                this_pulse * self.sys_config['PROM'] - self.sys_config['V_A'] / self.sys_config['R_M'] * TF1n - self.sys_config['K_TRAM_DEG'] * TF1n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF1n - self.sys_config['K_TEV'] * TF1m - self.sys_config['K_TRAM_DEG'] * TF1m,
-                self.sys_config['K_TEV'] * TF1m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF1Cm - self.sys_config['K_TRAM_DEG'] * TF1Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF1Cm - self.sys_config['K_TVMV'] * TF1Cn - self.sys_config['K_TRAM_DEG'] * TF1Cn,
+                this_pulse * prom - v_a / r_m * TF1n - k_tram_deg * TF1n,
+                v_a / r_m * TF1n - k_tev * TF1m - k_tram_deg * TF1m,
+                k_tev * TF1m - v_a / r_m * TF1Cm - k_tram_deg * TF1Cm,
+                v_a / r_m * TF1Cm - k_tvmv * TF1Cn - k_tram_deg * TF1Cn,
 
                 # Second round
-                self.sys_config['K_TVMV'] * TF1Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF2n - self.sys_config['K_TRAM_DEG'] * TF2n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF2n - self.sys_config['K_TEV'] * TF2m - self.sys_config['K_TRAM_DEG'] * TF2m,
-                self.sys_config['K_TEV'] * TF2m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF2Cm - self.sys_config['K_TRAM_DEG'] * TF2Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF2Cm - self.sys_config['K_TVMV'] * TF2Cn - self.sys_config['K_TRAM_DEG'] * TF2Cn,
+                k_tvmv * TF1Cn - v_a / r_m * TF2n - k_tram_deg * TF2n,
+                v_a / r_m * TF2n - k_tev * TF2m - k_tram_deg * TF2m,
+                k_tev * TF2m - v_a / r_m * TF2Cm - k_tram_deg * TF2Cm,
+                v_a / r_m * TF2Cm - k_tvmv * TF2Cn - k_tram_deg * TF2Cn,
 
                 # Third round
-                self.sys_config['K_TVMV'] * TF2Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF3n - self.sys_config['K_TRAM_DEG'] * TF3n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF3n - self.sys_config['K_TEV'] * TF3m - self.sys_config['K_TRAM_DEG'] * TF3m,
-                self.sys_config['K_TEV'] * TF3m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF3Cm - self.sys_config['K_TRAM_DEG'] * TF3Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF3Cm - self.sys_config['K_TVMV'] * TF3Cn - self.sys_config['K_TRAM_DEG'] * TF3Cn,
+                k_tvmv * TF2Cn - v_a / r_m * TF3n - k_tram_deg * TF3n,
+                v_a / r_m * TF3n - k_tev * TF3m - k_tram_deg * TF3m,
+                k_tev * TF3m - v_a / r_m * TF3Cm - k_tram_deg * TF3Cm,
+                v_a / r_m * TF3Cm - k_tvmv * TF3Cn - k_tram_deg * TF3Cn,
 
                 # Fourth round
-                self.sys_config['K_TVMV'] * TF3Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF4n - self.sys_config['K_TRAM_DEG'] * TF4n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF4n - self.sys_config['K_TEV'] * TF4m - self.sys_config['K_TRAM_DEG'] * TF4m,
-                self.sys_config['K_TEV'] * TF4m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF4Cm - self.sys_config['K_TRAM_DEG'] * TF4Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF4Cm - self.sys_config['K_TVMV'] * TF4Cn - self.sys_config['K_TRAM_DEG'] * TF4Cn,
+                k_tvmv * TF3Cn - v_a / r_m * TF4n - k_tram_deg * TF4n,
+                v_a / r_m * TF4n - k_tev * TF4m - k_tram_deg * TF4m,
+                k_tev * TF4m - v_a / r_m * TF4Cm - k_tram_deg * TF4Cm,
+                v_a / r_m * TF4Cm - k_tvmv * TF4Cn - k_tram_deg * TF4Cn,
 
                 # Fifth round
-                self.sys_config['K_TVMV'] * TF4Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF5n - self.sys_config['K_TRAM_DEG'] * TF5n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF5n - self.sys_config['K_TEV'] * TF5m - self.sys_config['K_TRAM_DEG'] * TF5m,
-                self.sys_config['K_TEV'] * TF5m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF5Cm - self.sys_config['K_TRAM_DEG'] * TF5Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF5Cm - self.sys_config['K_TVMV'] * TF5Cn - self.sys_config['K_TRAM_DEG'] * TF5Cn,
+                k_tvmv * TF4Cn - v_a / r_m * TF5n - k_tram_deg * TF5n,
+                v_a / r_m * TF5n - k_tev * TF5m - k_tram_deg * TF5m,
+                k_tev * TF5m - v_a / r_m * TF5Cm - k_tram_deg * TF5Cm,
+                v_a / r_m * TF5Cm - k_tvmv * TF5Cn - k_tram_deg * TF5Cn,
 
                 # Sixth round
-                self.sys_config['K_TVMV'] * TF5Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF6n - self.sys_config['K_TRAM_DEG'] * TF6n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF6n - self.sys_config['K_TEV'] * TF6m - self.sys_config['K_TRAM_DEG'] * TF6m,
-                self.sys_config['K_TEV'] * TF6m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF6Cm - self.sys_config['K_TRAM_DEG'] * TF6Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF6Cm - self.sys_config['K_TVMV'] * TF6Cn - self.sys_config['K_TRAM_DEG'] * TF6Cn,
+                k_tvmv * TF5Cn - v_a / r_m * TF6n - k_tram_deg * TF6n,
+                v_a / r_m * TF6n - k_tev * TF6m - k_tram_deg * TF6m,
+                k_tev * TF6m - v_a / r_m * TF6Cm - k_tram_deg * TF6Cm,
+                v_a / r_m * TF6Cm - k_tvmv * TF6Cn - k_tram_deg * TF6Cn,
 
                 # Seventh round
-                self.sys_config['K_TVMV'] * TF6Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF7n - self.sys_config['K_TRAM_DEG'] * TF7n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF7n - self.sys_config['K_TEV'] * TF7m - self.sys_config['K_TRAM_DEG'] * TF7m,
-                self.sys_config['K_TEV'] * TF7m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF7Cm - self.sys_config['K_TRAM_DEG'] * TF7Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF7Cm - self.sys_config['K_TVMV'] * TF7Cn - self.sys_config['K_TRAM_DEG'] * TF7Cn,
+                k_tvmv * TF6Cn - v_a / r_m * TF7n - k_tram_deg * TF7n,
+                v_a / r_m * TF7n - k_tev * TF7m - k_tram_deg * TF7m,
+                k_tev * TF7m - v_a / r_m * TF7Cm - k_tram_deg * TF7Cm,
+                v_a / r_m * TF7Cm - k_tvmv * TF7Cn - k_tram_deg * TF7Cn,
 
                 # Eighth round
-                self.sys_config['K_TVMV'] * TF7Cn - self.sys_config['V_A'] / self.sys_config['R_M'] * TF8n - self.sys_config['K_TRAM_DEG'] * TF8n,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF8n - self.sys_config['K_TEV'] * TF8m - self.sys_config['K_TRAM_DEG'] * TF8m,
-                self.sys_config['K_TEV'] * TF8m - self.sys_config['V_A'] / self.sys_config['R_M'] * TF8Cm - self.sys_config['K_TRAM_DEG'] * TF8Cm,
-                self.sys_config['V_A'] / self.sys_config['R_M'] * TF8Cm - self.sys_config['K_TVMV'] * TF8Cn - self.sys_config['K_TRAM_DEG'] * TF8Cn,
+                k_tvmv * TF7Cn - v_a / r_m * TF8n - k_tram_deg * TF8n,
+                v_a / r_m * TF8n - k_tev * TF8m - k_tram_deg * TF8m,
+                k_tev * TF8m - v_a / r_m * TF8Cm - k_tram_deg * TF8Cm,
+                v_a / r_m * TF8Cm - k_tvmv * TF8Cn - k_tram_deg * TF8Cn,
                 
                 # Final TRAM domain cleaved, regular TF degradation (in nucleus)
-                self.sys_config['K_TVMV'] * TF8Cn - self.sys_config['K_TF_DEG'] * TF
+                k_tvmv * TF8Cn - k_tf_deg * TF
             ]
             return dydt
         
