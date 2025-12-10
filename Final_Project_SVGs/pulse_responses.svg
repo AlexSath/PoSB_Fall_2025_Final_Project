@@ -9,7 +9,7 @@
    id="svg1"
    inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
    sodipodi:docname="pulse_responses.svg"
-   inkscape:export-filename="../Final_Project_PNG/pulse_responses.png"
+   inkscape:export-filename="../Final_Project_PNG/pulse_responses_wbg.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -26,15 +26,16 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="1.0997065"
-     inkscape:cx="507.4081"
-     inkscape:cy="714.73614"
-     inkscape:window-width="1800"
+     inkscape:zoom="0.53239694"
+     inkscape:cx="325.88467"
+     inkscape:cy="396.32084"
+     inkscape:window-width="1808"
      inkscape:window-height="1019"
-     inkscape:window-x="0"
-     inkscape:window-y="44"
+     inkscape:window-x="646"
+     inkscape:window-y="130"
      inkscape:window-maximized="0"
-     inkscape:current-layer="g1" />
+     inkscape:current-layer="g1"
+     inkscape:export-bgcolor="#ffffffff" />
   <defs
      id="defs1" />
   <g
@@ -91,112 +92,112 @@
          xml:space="preserve"
          style="font-size:6.35px;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:none;stroke:#b200a5;stroke-width:1.5;stroke-dasharray:none;stroke-opacity:1"
          x="64.64225"
-         y="203.02855"
+         y="188.21208"
          id="text2-58-0-0"><tspan
            sodipodi:role="line"
            id="tspan2-9-4-0"
            style="font-style:normal;font-weight:bold;font-size:6.35px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.5;stroke-opacity:1"
            x="64.64225"
-           y="203.02855">Delayed Response - Ideal</tspan></text>
+           y="188.21208">Delayed Response - Ideal</tspan></text>
       <text
          xml:space="preserve"
          style="font-size:8.46667px;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:none;stroke:#b200a5;stroke-width:1.5;stroke-dasharray:none;stroke-opacity:1"
          x="21.194386"
-         y="203.57838"
+         y="188.76192"
          id="text2-1-2-9"><tspan
            sodipodi:role="line"
            id="tspan2-8-6-3"
            style="font-style:italic;font-weight:bold;font-size:8.46667px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.5;stroke-opacity:1"
            x="21.194386"
-           y="203.57838">c</tspan></text>
+           y="188.76192">c</tspan></text>
       <path
          style="fill:none;stroke:#00b206;stroke-width:1.5;stroke-dasharray:none;stroke-opacity:1"
-         d="m 50.838026,262.98129 c 0,0 9.970456,-4.30305 12.692285,-10.9302 6.294796,-15.32669 4.333223,-42.0919 10.126662,-42.39182 5.823834,-0.30149 2.853892,27.06513 9.168701,42.54713 2.667102,6.53891 13.150571,10.7749 13.150571,10.7749"
+         d="m 50.838026,248.16453 c 0,0 9.970456,-4.30305 12.692285,-10.9302 6.294796,-15.32669 4.333223,-42.0919 10.126662,-42.39182 5.823834,-0.30149 2.853892,27.06513 9.168701,42.54713 2.667102,6.53891 13.150571,10.7749 13.150571,10.7749"
          id="path2-2"
          sodipodi:nodetypes="csssc"
          inkscape:label="input" />
       <path
          style="fill:none;stroke:#b200a5;stroke-width:1.5;stroke-dasharray:none;stroke-opacity:1"
-         d="m 117.47035,262.97555 c 0,0 11.72109,-4.15646 14.05429,-10.9302 5.42821,-15.75919 4.33323,-42.0919 10.12666,-42.39182 5.82384,-0.30149 2.55816,26.63264 9.16871,42.54713 2.70897,6.52169 14.26498,10.7749 14.26498,10.7749"
+         d="m 117.47035,248.15879 c 0,0 11.72109,-4.15646 14.05429,-10.9302 5.42821,-15.75919 4.33323,-42.0919 10.12666,-42.39182 5.82384,-0.30149 2.55816,26.63264 9.16871,42.54713 2.70897,6.52169 14.26498,10.7749 14.26498,10.7749"
          id="path2-6-5"
          sodipodi:nodetypes="csssc"
          inkscape:label="output" />
       <path
          style="fill:none;stroke:#000000;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
-         d="M 31.223751,262.98129 H 182.45147"
+         d="M 31.223751,248.16453 H 182.45147"
          id="path1-1"
          sodipodi:nodetypes="cc" />
       <path
          style="fill:none;stroke:#000000;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
-         d="m 32.223751,205.75102 v 58.23027"
+         d="m 32.223751,190.93426 v 58.23027"
          id="path1-7-3"
          sodipodi:nodetypes="cc" />
       <text
          xml:space="preserve"
          style="font-size:8.46667px;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:none;stroke:#b200a5;stroke-width:1.5;stroke-dasharray:none;stroke-opacity:1"
          x="104.82023"
-         y="272.4097"
+         y="257.5928"
          id="text2-9"><tspan
            sodipodi:role="line"
            id="tspan2-7"
            style="font-style:italic;font-weight:normal;font-size:8.46667px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.5;stroke-opacity:1"
            x="104.82023"
-           y="272.4097">t</tspan></text>
+           y="257.5928">t</tspan></text>
       <text
          xml:space="preserve"
          style="font-size:6.35px;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:none;stroke:#b200a5;stroke-width:1.5;stroke-dasharray:none;stroke-opacity:1"
          x="44.809357"
-         y="112.17678"
+         y="103.18097"
          id="text2-58-0"><tspan
            sodipodi:role="line"
            id="tspan2-9-4"
            style="font-style:normal;font-weight:bold;font-size:6.35px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.5;stroke-opacity:1"
            x="44.809357"
-           y="112.17678">Delayed Response - Protein Stability</tspan></text>
+           y="103.18097">Delayed Response - Protein Stability</tspan></text>
       <text
          xml:space="preserve"
          style="font-size:8.46667px;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:none;stroke:#b200a5;stroke-width:1.5;stroke-dasharray:none;stroke-opacity:1"
          x="21.864113"
-         y="113.57411"
+         y="104.57827"
          id="text2-1-2"><tspan
            sodipodi:role="line"
            id="tspan2-8-6"
            style="font-style:italic;font-weight:bold;font-size:8.46667px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.5;stroke-opacity:1"
            x="21.864113"
-           y="113.57411">b</tspan></text>
+           y="104.57827">b</tspan></text>
       <path
          style="fill:none;stroke:#00b206;stroke-width:1.5;stroke-dasharray:none;stroke-opacity:0.835294"
-         d="m 31.893479,172.71338 c 0,0 9.273138,-9.48941 14.190917,-24.21338 3.23951,-9.69921 15.54413,-20.8917 27.3017,-20.93919 12.57492,-0.0508 24.56745,10.32246 28.111634,20.93919 5.18508,15.53209 13.24119,24.21338 13.24119,24.21338"
+         d="m 31.893479,163.71749 c 0,0 9.273138,-9.48941 14.190917,-24.21338 3.23951,-9.69921 15.54413,-20.8917 27.3017,-20.93919 12.57492,-0.0508 24.56745,10.32246 28.111634,20.93919 5.18508,15.53209 13.24119,24.21338 13.24119,24.21338"
          id="path2-4-2-5"
          sodipodi:nodetypes="csssc"
          inkscape:label="input" />
       <path
          style="fill:none;stroke:#b200a5;stroke-width:1.5;stroke-dasharray:none;stroke-opacity:1"
-         d="m 99.946015,172.71338 c 0,0 9.116375,-9.48941 14.034155,-24.21338 3.23951,-9.69921 15.54413,-20.8917 27.3017,-20.93919 12.57492,-0.0508 24.56745,10.32246 28.11163,20.93919 5.18508,15.53209 13.24119,24.21338 13.24119,24.21338"
+         d="m 99.946015,163.71749 c 0,0 9.116375,-9.48941 14.034155,-24.21338 3.23951,-9.69921 15.54413,-20.8917 27.3017,-20.93919 12.57492,-0.0508 24.56745,10.32246 28.11163,20.93919 5.18508,15.53209 13.24119,24.21338 13.24119,24.21338"
          id="path2-4-2"
          sodipodi:nodetypes="csssc"
          inkscape:label="input" />
       <path
          style="fill:none;stroke:#000000;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
-         d="M 31.364312,172.71338 H 182.59203"
+         d="M 31.364312,163.71749 H 182.59203"
          id="path1-5"
          sodipodi:nodetypes="cc" />
       <path
          style="fill:none;stroke:#000000;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
-         d="m 32.364312,115.48312 v 58.23026"
+         d="m 32.364312,106.48723 v 58.23026"
          id="path1-7-5"
          sodipodi:nodetypes="cc" />
       <text
          xml:space="preserve"
          style="font-size:8.46667px;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:none;stroke:#b200a5;stroke-width:1.5;stroke-dasharray:none;stroke-opacity:1"
          x="104.96078"
-         y="182.14182"
+         y="173.1461"
          id="text2-5"><tspan
            sodipodi:role="line"
            id="tspan2-4"
            style="font-style:italic;font-weight:normal;font-size:8.46667px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.5;stroke-opacity:1"
            x="104.96078"
-           y="182.14182">t</tspan></text>
+           y="173.1461">t</tspan></text>
       <text
          xml:space="preserve"
          style="font-size:6.35px;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:none;stroke:#b200a5;stroke-width:1.5;stroke-dasharray:none;stroke-opacity:1"
@@ -262,7 +263,7 @@
            id="tspan2"
            style="stroke-width:1.5"
            x="210"
-           y="126.75854"></tspan></text>
+           y="126.75854" /></text>
       <text
          xml:space="preserve"
          style="font-size:8.46667px;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.5;stroke-dasharray:none;stroke-opacity:1"

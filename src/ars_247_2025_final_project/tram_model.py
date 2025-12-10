@@ -48,7 +48,9 @@ class TRAM_Model():
         soln = solve_ivp(
             fun = model,
             t_span = [0, 4 * 3600],
-            y0 = [0]
+            y0 = [0],
+            # t_eval = np.linspace(0, 4 * 3600, 100000)
+            max_step = 1
         )
         return soln
 
@@ -57,7 +59,8 @@ class TRAM_Model():
             fun = self.model,
             t_span = [t_start, t_end],
             # y0 = np.zeros(shape=(self.n_domains * 4 + 1))
-            y0 = np.zeros(shape=(self.n_domains * 4 + 1))
+            y0 = np.zeros(shape=(self.n_domains * 4 + 1)),
+            max_step = 1
         )
         return soln
 
@@ -85,6 +88,26 @@ class TRAM_Model():
                 return getattr(self, attr)()
         else:
             raise ValueError(f"Model builder function not found for a model with {self.n_domains}")
+        
+    def _build_tram_model_0_domain(self) -> Callable:
+        def model(t: float, y):
+            TF = y
+
+            if self.pulse == 'gaussian':
+                this_pulse = gaussian_pulse(t, **self.pulse_params)
+            elif self.pulse == 'sigmoid':
+                this_pulse = double_sigmoid_pulse(t, **self.pulse_params)
+            else:
+                this_pulse = self.pulse
+
+            dydt = [
+                this_pulse * self.sys_config['PROM'] - self.sys_config['K_TF_DEG'] * TF
+            ]
+
+            return dydt
+        
+        return model
+
         
     def _build_tram_model_1_domain(self) -> Callable:
         def model(t: float, y):
